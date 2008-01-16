@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/glowstick
+lib/glowstick.rb
+test/test_glowstick.rb
