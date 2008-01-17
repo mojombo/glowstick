@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+$:.unshift(File.join(File.dirname(__FILE__), *%w[.. lib]))
+
+require 'glowstick'
+
+class SystemProcess
+  def initialize(pid)
+    @pid = pid.to_i
+  end
+  
+  # Memory usage in kilobytes (resident set size)
+  def memory
+    ps_int('rss')
+  end
+  
+  private
+  
+  def ps_int(keyword)
+    `ps -o #{keyword}= -p #{@pid}`.to_i
+  end
+end
+
+class Memo
+  def initialize(pid)
+    @process = SystemProcess.new(pid)
+    @graph = Glowstick::Graph.new
+  end
+  
+  def idle
+    # sleep 0.1
+    mem = @process.memory
+    @graph.add(mem)
+    true
+  end
+end
+
+memo = Memo.new(4871)
+
+Glowstick.new(memo).start
