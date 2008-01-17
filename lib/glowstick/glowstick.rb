@@ -64,6 +64,8 @@ class Glowstick
   end
   
   def idle
+    return unless @handler.respond_to?(:idle)
+    
     should_draw = @handler.idle
     if should_draw
       glutPostRedisplay

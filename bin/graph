@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+$:.unshift(File.join(File.dirname(__FILE__), *%w[.. lib]))
+
+require 'glowstick'
+
+graph = Glowstick::Graph.new
+
+File.read("/Users/tom/mem.log").split("\n").each { |x| graph.add(x.to_i) }
+
+Glowstick.new(nil).start
