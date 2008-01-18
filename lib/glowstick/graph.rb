@@ -1,10 +1,11 @@
 class Glowstick
   
   class Graph
-    attr_accessor :data
+    attr_accessor :data, :color
     
     def initialize
       @data = []
+      @color = [1, 1, 1]
       @box = Box.new(0, 1, 0, 1)
       Glowstick.register(self)
     end
@@ -26,6 +27,8 @@ class Glowstick
     end
     
     def draw
+      glColor3f(*@color)
+      
       i = 0
         
       @data.each_cons(2) do |a|

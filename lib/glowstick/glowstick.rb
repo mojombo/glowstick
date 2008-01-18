@@ -13,6 +13,10 @@ class Glowstick
     self.graphs << graph
   end
   
+  def self.clear
+    self.graphs.clear
+  end
+  
   ###########################################################################
   # Instance
   
@@ -57,15 +61,17 @@ class Glowstick
   end
   
   def keyboard(key, x, y)
-    case (key)
-      when ?r
-        glutPostRedisplay()
+    # case (key)
+    #   when ?r
+    #     glutPostRedisplay()
+    # end
+    should_draw = @handler.keyboard(key, x, y)
+    if should_draw
+      glutPostRedisplay
     end
   end
   
   def idle
-    return unless @handler.respond_to?(:idle)
-    
     should_draw = @handler.idle
     if should_draw
       glutPostRedisplay
@@ -86,10 +92,12 @@ class Glowstick
     glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE)
     glShadeModel(GL_FLAT)
     
+    @handler.init if @handler.respond_to?(:init)
+    
     glutDisplayFunc(self.method(:display).to_proc) 
     glutReshapeFunc(self.method(:reshape).to_proc)
-    glutKeyboardFunc(self.method(:keyboard).to_proc)
-    glutIdleFunc(self.method(:idle).to_proc)
+    glutKeyboardFunc(self.method(:keyboard).to_proc) if @handler.respond_to?(:keyboard)
+    glutIdleFunc(self.method(:idle).to_proc) if @handler.respond_to?(:idle)
     
     glutMainLoop()
   end

@@ -4,8 +4,37 @@ $:.unshift(File.join(File.dirname(__FILE__), *%w[.. lib]))
 
 require 'glowstick'
 
-graph = Glowstick::Graph.new
+class Handler
+  def draw
+    Glowstick.clear
+    
+    graph = Glowstick::Graph.new
+    graph.color = [1, 0, 0]
+    File.read("/Users/tom/mem.5.log").split("\n").each { |x| graph.add(x.to_i) }
+    
+    graph = Glowstick::Graph.new
+    graph.color = [0, 1, 0]
+    File.read("/Users/tom/mem.4.log").split("\n").each { |x| graph.add(x.to_i) }
 
-File.read("/Users/tom/mem.log").split("\n").each { |x| graph.add(x.to_i) }
+    graph = Glowstick::Graph.new
+    graph.color = [0.3, 0.3, 0.3]
+    File.read("/Users/tom/mem.6.log").split("\n").each { |x| graph.add(x.to_i) }
 
-Glowstick.new(nil).start
+    graph = Glowstick::Graph.new
+    graph.color = [1, 1, 1]
+    File.read("/Users/tom/mem.log").split("\n").each { |x| graph.add(x.to_i) }
+  end
+  
+  # callbacks
+  
+  def init
+    draw
+  end
+  
+  def keyboard(key, x, y)
+    draw
+    true
+  end
+end
+
+Glowstick.new(Handler.new).start

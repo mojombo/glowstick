@@ -28,13 +28,13 @@ class Memo
   end
   
   def idle
-    # sleep 0.1
+    sleep 0.1
     mem = @process.memory
     @graph.add(mem)
     true
   end
 end
 
-memo = Memo.new(4871)
+memo = Memo.new(29344)
 
 Glowstick.new(memo).start
